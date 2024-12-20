@@ -223,7 +223,11 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
 
   void _selectAll(bool checked) {
     _selectedValues = [];
-    _items.forEach((item) => _setSelectedState(item, checked));
+    final isAllItemsSelected = _items.every((item) => item.selected);
+    if (!isAllItemsSelected) {
+      _items.forEach((item) => _setSelectedState(item, true));
+    } else
+      _items.forEach((item) => _setSelectedState(item, false));
     if (widget.onSelectionChanged != null) {
       widget.onSelectionChanged!(_selectedValues);
     }
