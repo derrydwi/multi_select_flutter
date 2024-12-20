@@ -103,6 +103,9 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
   /// Set the color of the check in the checkbox
   final Color? checkColor;
 
+  /// Whether the user can dismiss the widget by tapping outside
+  final bool isDismissible;
+
   final AutovalidateMode autovalidateMode;
   final FormFieldValidator<List<V>>? validator;
   final FormFieldSetter<List<V>>? onSaved;
@@ -140,6 +143,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
     this.selectedItemsTextStyle,
     this.separateSelectedItems = false,
     this.checkColor,
+    this.isDismissible = true,
     this.onSaved,
     this.validator,
     this.initialValue = const [],
@@ -185,6 +189,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
                 selectedItemsTextStyle: selectedItemsTextStyle,
                 separateSelectedItems: separateSelectedItems,
                 checkColor: checkColor,
+                isDismissible: isDismissible,
               );
               return _MultiSelectDialogFieldView<V>._withState(field, state);
             });
@@ -223,6 +228,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
   final TextStyle? searchHintStyle;
   final bool separateSelectedItems;
   final Color? checkColor;
+  final bool isDismissible;
   FormFieldState<List<V>>? state;
 
   _MultiSelectDialogFieldView({
@@ -257,6 +263,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
     this.selectedItemsTextStyle,
     this.separateSelectedItems = false,
     this.checkColor,
+    required this.isDismissible,
   });
 
   /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectDialogField.
@@ -293,6 +300,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
         selectedItemsTextStyle = field.selectedItemsTextStyle,
         separateSelectedItems = field.separateSelectedItems,
         checkColor = field.checkColor,
+        isDismissible = field.isDismissible,
         state = state;
 
   @override
@@ -385,6 +393,7 @@ class __MultiSelectDialogFieldViewState<V>
   _showDialog(BuildContext ctx) async {
     await showDialog(
       barrierColor: widget.barrierColor,
+      barrierDismissible: widget.isDismissible,
       context: context,
       builder: (ctx) {
         return MultiSelectDialog<V>(
@@ -414,11 +423,11 @@ class __MultiSelectDialogFieldViewState<V>
           selectAllText: widget.selectAllText,
           separateSelectedItems: widget.separateSelectedItems,
           onConfirm: (selected) {
-            if (widget.state != null) {
-              widget.state!.didChange(selected);
-            }
             _selectedItems = selected;
-            if (widget.onConfirm != null) widget.onConfirm!(selected);
+            if (widget.state != null) {
+              widget.state!.didChange(_selectedItems);
+            }
+            if (widget.onConfirm != null) widget.onConfirm!(_selectedItems);
           },
         );
       },
