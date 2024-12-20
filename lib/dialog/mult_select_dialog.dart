@@ -335,9 +335,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
           TextButton(
             child: widget.selectAllText ??
                 Text(
-                  items.every((item) => item.selected)
-                      ? 'DESELECT ALL'
-                      : 'SELECT ALL',
+                  "SELECT ALL",
                   style: TextStyle(
                     color: (widget.selectedColor != null &&
                             widget.selectedColor != Colors.transparent)
