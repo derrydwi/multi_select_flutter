@@ -34,7 +34,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
   final MultiSelectChipDisplay<V>? chipDisplay;
 
   /// The list of selected values before interaction.
-  final List<V>? initialValue;
+  final List<V> initialValue;
 
   /// Fires when confirm is tapped.
   final void Function(List<V>) onConfirm;
@@ -142,7 +142,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
     this.checkColor,
     this.onSaved,
     this.validator,
-    this.initialValue,
+    this.initialValue = const [],
     this.autovalidateMode = AutovalidateMode.disabled,
     this.key,
   }) : super(
@@ -150,7 +150,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
             onSaved: onSaved,
             validator: validator,
             autovalidateMode: autovalidateMode,
-            initialValue: initialValue ?? [],
+            initialValue: initialValue,
             builder: (FormFieldState<List<V>> state) {
               _MultiSelectDialogFieldView<V> field =
                   _MultiSelectDialogFieldView<V>(
@@ -200,7 +200,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
   final List<MultiSelectItem<V>> items;
   final void Function(List<V>)? onSelectionChanged;
   final MultiSelectChipDisplay<V>? chipDisplay;
-  final List<V>? initialValue;
+  final List<V> initialValue;
   final void Function(List<V>)? onConfirm;
   final bool? searchable;
   final bool? selectAll;
@@ -235,7 +235,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
     this.onSelectionChanged,
     this.onConfirm,
     this.chipDisplay,
-    this.initialValue,
+    this.initialValue = const [],
     this.searchable,
     this.selectAll,
     this.confirmText,
